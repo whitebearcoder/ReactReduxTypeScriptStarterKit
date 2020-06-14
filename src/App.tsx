@@ -1,26 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { connect, useSelector } from "react-redux";
+import {
+  increaseCountAction,
+  decreaseCountAction,
+} from "./actions/countAction";
+import "./App.css";
 
-function App() {
+type Props = {
+  increaseCountAction: Function,
+  decreaseCountAction: Function,
+}
+
+const App = ({ increaseCountAction, decreaseCountAction }: Props) => {
+  const { count } = useSelector((state:any) => ({
+    count: state.countReducer.value,
+  }));
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>{count}</h1>
+        <div className="action-div">
+          <button onClick={() => {decreaseCountAction()}}>Decrese(-1)</button>
+          <button onClick={() => {increaseCountAction()}}>Increase(+1)</button>
+        </div>
       </header>
     </div>
+
   );
 }
 
-export default App;
+export default connect(null, { increaseCountAction, decreaseCountAction })(App);
